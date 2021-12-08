@@ -47,7 +47,7 @@ export default {
         connectTimeout: 4000, // Time out
         reconnectPeriod: 4000, // Reconnection interval
         // Certification Information
-        clientId: 'clientId-j0Nks3DYA0',
+        clientId: 'clientId-yPpoDlGQo3',
         username: '',
         password: '',
       },
