@@ -1,8 +1,8 @@
 <template>
   <div class="hello">
-     <button v-on:click="createConnection">Click</button>
+     <!--<button v-on:click="createConnection">Click</button>
      <br/>
-     <button v-on:click="doSubscribe">subscribe</button>
+     <button v-on:click="doSubscribe">subscribe</button>-->
       <v-card
     class="mx-auto"
     max-width="344"
@@ -33,6 +33,10 @@
 import mqtt from 'mqtt';
 export default {
   name: "HelloWorld",
+  mounted() {
+      this.createConnection();
+      this.doSubscribe();
+    },
    data() {
     return {
       logo: require('../assets/weather.jpg'),
@@ -47,7 +51,7 @@ export default {
         connectTimeout: 4000, // Time out
         reconnectPeriod: 4000, // Reconnection interval
         // Certification Information
-        clientId: 'clientId-yPpoDlGQo3',
+        clientId: 'clientId-j0Nks3DYA0',
         username: '',
         password: '',
       },
