@@ -16,6 +16,10 @@
       Humidity : 
     </v-card-title>
 
+    <v-card-title>
+      Battery : 
+    </v-card-title>
+
   </v-card>
 </template>
 
