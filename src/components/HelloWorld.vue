@@ -3,28 +3,49 @@
      <!--<button v-on:click="createConnection">Click</button>
      <br/>
      <button v-on:click="doSubscribe">subscribe</button>-->
+    <div v-if="temperature === ''">
+      <v-row align="center" style="display: flex; justify-content: center; margin-top: 50px">
+        <v-img
+          contain
+          :src="loader"
+          max-height="100"
+          max-width="100"
+        ></v-img>
+      </v-row>
+    </div> 
+    <div v-else>
       <v-card
-    class="mx-auto"
-    max-width="344"
-  >
-    <v-img
-      :src="logo"
-      height="200px"
-    ></v-img>
+      class="mx-auto"
+      max-width="344"
+      style="margin-top: 50px"
+      >
+      <v-img
+        :src="logo"
+        height="200px"
+      ></v-img>
 
-    <v-card-title>
-      Temperature : {{temperature}}
-    </v-card-title>
+      <div v-if="temperature === ''">
+        <v-img
+        :src="loader"
+        height="50px"
+        ></v-img>
+      </div>  
+      
+        <v-card-title>
+          Temperature : {{temperature}}
+        </v-card-title>
 
-    <v-card-title>
-      Humidity : {{ humidty }}
-    </v-card-title>
+        <v-card-title>
+          Humidity : {{ humidty }}
+        </v-card-title>
 
-    <v-card-title>
-      Battery : {{ battery }}
-    </v-card-title>
+        <v-card-title>
+          Battery : {{ battery }}
+        </v-card-title>
+      
 
-  </v-card>
+        </v-card>
+    </div>
   </div>
 
 </template>
@@ -40,6 +61,7 @@ export default {
    data() {
     return {
       logo: require('../assets/weather.jpg'),
+      loader: require('../assets/loader.gif'),
       temperature : '',
       humidty:'',
       battery:'',
