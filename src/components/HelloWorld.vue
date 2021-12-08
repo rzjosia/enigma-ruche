@@ -44,8 +44,8 @@ export default {
       humidty:'',
       battery:'',
       connection: {
-        host: 'broker.hivemq.com',
-        port: 8000,
+        host: 'broker.emqx.io',
+        port: 8084,
         endpoint: '/mqtt',
         clean: true, // Reserved session
         connectTimeout: 4000, // Time out
@@ -80,7 +80,7 @@ export default {
   methods: {
     createConnection() {
       const { host, port, endpoint, ...options } = this.connection
-      const connectUrl = `ws://${host}:${port}${endpoint}`
+      const connectUrl = `wss://${host}:${port}${endpoint}`
       try {
         this.client = mqtt.connect(connectUrl, options)
       } catch (error) {
