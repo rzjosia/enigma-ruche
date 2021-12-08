@@ -7,6 +7,16 @@ import vuetify from '@/plugins/vuetify' // path to vuetify export
 
 Vue.config.productionTip = false;
 
+if ("serviceWorker" in navigator) {
+  let reloading = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (!reloading) {
+      window.location.reload();
+      reloading = true;
+    }
+  });
+}
+
 new Vue({
   vuetify,
   router,
