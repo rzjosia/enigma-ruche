@@ -1,22 +1,31 @@
 <template>
-  <div class="hello">
-      <v-main>
-        <v-container>
-          <v-row>
-            <v-col v-for="n in 24" :key="n" cols="4">
-              <v-card height="200"></v-card>
-            </v-col>
-          </v-row>
-        </v-container>
-      </v-main>
-  </div>
+  <v-card
+    class="mx-auto"
+    max-width="344"
+  >
+    <v-img
+      :src="logo"
+      height="200px"
+    ></v-img>
+
+    <v-card-title>
+      Temperature : 
+    </v-card-title>
+
+    <v-card-title>
+      Humidity : 
+    </v-card-title>
+
+  </v-card>
 </template>
 
 <script>
 export default {
   name: "HelloWorld",
-  props: {
-    msg: String,
-  },
+  data: function() {
+    return {
+      logo: require('../assets/weather.jpg')
+    }
+  }
 };
 </script>
