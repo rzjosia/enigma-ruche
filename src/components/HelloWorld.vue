@@ -3,8 +3,7 @@
      <button v-on:click="createConnection">Click</button>
      <br/>
      <button v-on:click="doSubscribe">subscribe</button>
-  </div>
-  <v-card
+      <v-card
     class="mx-auto"
     max-width="344"
   >
@@ -14,18 +13,19 @@
     ></v-img>
 
     <v-card-title>
-      Temperature : 
+      Temperature : {{temperature}}
     </v-card-title>
 
     <v-card-title>
-      Humidity : 
+      Humidity : {{ humidty }}
     </v-card-title>
 
     <v-card-title>
-      Battery : 
+      Battery : {{ battery }}
     </v-card-title>
 
   </v-card>
+  </div>
 
 </template>
 
@@ -36,6 +36,9 @@ export default {
    data() {
     return {
       logo: require('../assets/weather.jpg'),
+      temperature : '',
+      humidty:'',
+      battery:'',
       connection: {
         host: 'broker.hivemq.com',
         port: 8000,
@@ -71,7 +74,6 @@ export default {
   },
 
   methods: {
-    // Create connection
     createConnection() {
       const { host, port, endpoint, ...options } = this.connection
       const connectUrl = `ws://${host}:${port}${endpoint}`
@@ -88,7 +90,11 @@ export default {
       })
       this.client.on('message', (topic, message) => {
         this.receiveNews = this.receiveNews.concat(message)
-        console.log(`Received message ${message} from topic ${topic}`)
+        let data = JSON.parse(`${message}`);
+        console.log(data);
+        this.temperature = data.temp;
+        this.humidty = data.humidity;
+        this.battery = data.battery;
       })
     },
     doSubscribe() {
@@ -100,7 +106,6 @@ export default {
       }
       this.subscribeSuccess = true
       console.log(res)
-      
     })
   },
   }
