@@ -1,62 +1,77 @@
 <template>
-  <div class="hello">
-     <!--<button v-on:click="createConnection">Click</button>
-     <br/>
-     <button v-on:click="doSubscribe">subscribe</button>-->
-    <div v-if="temperature === ''">
-      <v-row align="center" style="display: flex; justify-content: center; margin-top: 50px">
-        <v-img
-          contain
-          :src="loader"
-          max-height="100"
-          max-width="100"
-        ></v-img>
-      </v-row>
-    </div> 
-    <div v-else>
-      <v-card
-      class="mx-auto"
-      max-width="344"
-      style="margin-top: 50px"
-      >
-      <v-img
-        :src="logo"
-        height="200px"
-      ></v-img>
+	<div class="hello">
+		<div v-if="temperature === ''">
+			<v-row align="center" style="display: flex; justify-content: center; margin-top: 50px">
+				<v-img
+					contain
+					:src="loader"
+					max-height="100"
+					max-width="100"
+				></v-img>
+			</v-row>
+		</div> 
+		<div v-else>
+			<v-card
+			    class="mx-auto"
+			    max-width="344"
+			    style="margin-top: 50px">
+			    <div class="text-h6 font-weight-light mb-2">Dernières données récupérées</div>
+			    <v-img
+				    :src="logo"
+				    height="200px"
+			    ></v-img>
 
-      <div v-if="temperature === ''">
-        <v-img
-        :src="loader"
-        height="50px"
-        ></v-img>
-      </div>  
-      
-        <v-card-title>
-          Temperature : {{temperature}}
-        </v-card-title>
+			    <div v-if="temperature === ''">
+				    <v-img
+				    :src="loader"
+				    height="50px"
+				    ></v-img>
+			    </div>  
+				<v-card-title>
+					Temperature : {{temperature}}
+				</v-card-title>
 
-        <v-card-title>
-          Humidity : {{ humidty }}
-        </v-card-title>
+				<v-card-title>
+					Humidity : {{ humidity }}
+				</v-card-title>
 
-        <v-card-title>
-          Battery : {{ battery }}
-        </v-card-title>
-      
-        </v-card>
-
-        <div id="table" align="center" style="width:50%; margin-left: 25%; margin-right: 25%; margin-top: 50px">
-          <v-data-table
-            dense
+				<v-card-title>
+					Battery : {{ battery }}
+				</v-card-title>
+			</v-card>
+			<v-card
+		        class="mt-4 mx-auto"
+		        max-width="650">
+		        <v-sheet
+			    class="v-sheet--offset mx-auto"
+			    color="cyan"
+			    elevation="12"
+			    max-width="calc(100% - 32px)">
+			        <v-sparkline
+				    :labels="labels"
+				    :value="valueTemp"
+				    color="white"
+				    line-width="2"
+				    padding="16"></v-sparkline>
+		        </v-sheet>
+		        <v-card-text class="pt-0">
+			        <div class="text-h6 font-weight-light mb-2">
+				        10 dernières températures récupérées
+			        </div>
+			        <v-divider class="my-2"></v-divider>
+		        </v-card-text>
+		    </v-card>
+             <div id="table" align="center" style="width:50%; margin-left: 25%; margin-right: 25%; margin-top: 50px">
+            <v-data-table dense
             :headers="headers"
             :items="allData"
             item-key="name"
             class="elevation-1"
           ></v-data-table>
         </div>
-    </div>
-  </div>
 
+        </div>
+	</div>
 </template>
 
 <script>
@@ -64,15 +79,28 @@ import mqtt from 'mqtt';
 export default {
   name: "HelloWorld",
   mounted() {
-      this.createConnection();
-      this.doSubscribe();
+        this.createConnection();
+	    if(localStorage.temperature) {
+			this.temperature = localStorage.temperature;
+		}
+        if(localStorage.humidity) {
+			this.humidity = localStorage.humidity;
+    	}
+        if(localStorage.battery) {
+			this.battery = localStorage.battery;
+		}
+        if(localStorage.valueTemp) {
+			this.valueTemp = JSON.parse(localStorage.valueTemp);
+		}
     },
    data() {
     return {
       logo: require('../assets/weather.jpg'),
       loader: require('../assets/loader.gif'),
+      labels: [0],
+	  valueTemp: [0],
       temperature : '',
-      humidty:'',
+      humidity:'',
       battery:'',
       headers: [
         { text: 'Temperature', value: 'temp' },
@@ -115,17 +143,33 @@ export default {
     }
   },
 
+     watch: {
+        temperature(newTemperature) {
+            localStorage.temperature = newTemperature;
+        },
+        humidity(newHumidity) {
+            localStorage.humidity = newHumidity;
+        },
+        battery(newBattery) {
+            localStorage.battery = newBattery;
+        },
+        valueTemp(newValueTemp) {
+            localStorage.valueTemp = JSON.stringify(newValueTemp);
+        }
+    },
+
   methods: {
     createConnection() {
-      const { host, port, endpoint, ...options } = this.connection
+      const { host, port, endpoint } = this.connection
       const connectUrl = `wss://${host}:${port}${endpoint}`
       try {
-        this.client = mqtt.connect(connectUrl, options)
+            this.client = mqtt.connect(connectUrl, { options: { keepAlive: 30}} )
       } catch (error) {
         console.log('mqtt.connect error', error)
       }
       this.client.on('connect', () => {
         console.log('Connection succeeded!')
+        this.doSubscribe();
       })
       this.client.on('error', error => {
         console.log('Connection failed', error)
@@ -144,8 +188,16 @@ export default {
         
         console.log(data);
         this.temperature = data.temp;
-        this.humidty = data.humidity;
+        this.humidity = data.humidity;
         this.battery = data.battery;
+        if(this.valueTemp.length == 10){
+			this.valueTemp.shift();
+			this.valueTemp.push(data.temp);
+		}
+		else{
+			this.valueTemp.push(data.temp);
+		}
+				
       })
     },
     doSubscribe() {
