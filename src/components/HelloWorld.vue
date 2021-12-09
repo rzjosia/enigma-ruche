@@ -92,6 +92,9 @@ export default {
         if(localStorage.valueTemp) {
 			this.valueTemp = JSON.parse(localStorage.valueTemp);
 		}
+         if(localStorage.allData) {
+			this.allData = JSON.parse(localStorage.allData);
+		}
     },
    data() {
     return {
@@ -155,6 +158,9 @@ export default {
         },
         valueTemp(newValueTemp) {
             localStorage.valueTemp = JSON.stringify(newValueTemp);
+        },
+        allData(newAllData) {
+            localStorage.allData = JSON.stringify(newAllData);
         }
     },
 
