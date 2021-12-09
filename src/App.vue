@@ -6,8 +6,7 @@
 
     <v-main>
       <router-view />
-      <p>{{ open }}</p>
-      <Alert v-model="open" />
+      <Alert />
     </v-main>
   </v-app>
 </template>
@@ -18,11 +17,6 @@ import Alert from "./components/Alert";
 export default {
   components: {
     Alert,
-  },
-  computed: {
-      open() {
-        return this.$store.state.alertPopping.open
-      }
   },
 };
 </script>

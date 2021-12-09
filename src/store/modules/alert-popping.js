@@ -8,15 +8,22 @@ const initialState = {
 };
 
 /*eslint-disable no-unused-vars*/
-export const state = initialState;
+export const state = { ...initialState };
 
 export const mutations = {
   SET_ALERT(state, alertData) {
     console.log(`[alert-popping] mutation`, alertData);
-    state = alertData;
+
+    state.open = alertData.open;
+    state.title = alertData.title;
+    state.message = alertData.message;
+    state.type = alertData.type;
   },
   RESET_ALERT(state) {
-    state = initialState;
+    state.open = initialState.open;
+    state.title = initialState.title;
+    state.message = initialState.message;
+    state.type = initialState.type;
   },
 };
 
@@ -24,6 +31,7 @@ export const actions = {
   setAlert({ commit }, payload) {
     console.log(`[alert-popping] state`, payload);
 
+    commit("RESET_ALERT");
     commit("SET_ALERT", {
       open: payload.open,
       title: payload.title,

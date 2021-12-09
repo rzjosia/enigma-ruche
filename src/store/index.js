@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import * as alertPopping from './modules/alert-popping';
+import * as alertPopping from "./modules/alert-popping";
 
 Vue.use(Vuex);
 

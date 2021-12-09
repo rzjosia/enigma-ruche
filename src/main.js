@@ -3,7 +3,7 @@ import App from "./App.vue";
 import "./registerServiceWorker";
 import router from "./router";
 import store from "./store";
-import vuetify from '@/plugins/vuetify' // path to vuetify export
+import vuetify from "@/plugins/vuetify"; // path to vuetify export
 
 Vue.config.productionTip = false;
 
