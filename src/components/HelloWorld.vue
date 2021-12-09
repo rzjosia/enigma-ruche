@@ -43,8 +43,17 @@
           Battery : {{ battery }}
         </v-card-title>
       
-
         </v-card>
+
+        <div id="table" align="center" style="width:50%; margin-left: 25%; margin-right: 25%; margin-top: 50px">
+          <v-data-table
+            dense
+            :headers="headers"
+            :items="allData"
+            item-key="name"
+            class="elevation-1"
+          ></v-data-table>
+        </div>
     </div>
   </div>
 
@@ -65,6 +74,13 @@ export default {
       temperature : '',
       humidty:'',
       battery:'',
+      headers: [
+        { text: 'Temperature', value: 'temp' },
+        { text: 'Humidity', value: 'humidity' },
+        { text: 'Battery', value: 'battery' },
+        { text: 'Date', value: 'date' },
+      ],
+      allData:[],
       connection: {
         host: 'broker.emqx.io',
         port: 8084,
@@ -115,8 +131,17 @@ export default {
         console.log('Connection failed', error)
       })
       this.client.on('message', (topic, message) => {
-        this.receiveNews = this.receiveNews.concat(message)
+        this.receiveNews = this.receiveNews.concat(message);
         let data = JSON.parse(`${message}`);
+        let d = new Date();
+        let now = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
+        d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
+        let objet = {temp:data.temp, humidity:data.humidity, battery:data.battery, date: now};
+        this.allData.unshift(objet);
+        //for(var element in this.receiveNews) {
+          console.log(this.allData);
+        //}
+        
         console.log(data);
         this.temperature = data.temp;
         this.humidty = data.humidity;
