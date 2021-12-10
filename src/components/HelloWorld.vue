@@ -187,10 +187,8 @@ export default {
         let now = ("0" + d.getDate()).slice(-2) + "-" + ("0"+(d.getMonth()+1)).slice(-2) + "-" +
         d.getFullYear() + " " + ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
         let objet = {temp:data.temp, humidity:data.humidity, battery:data.battery, date: now};
+        if (this.allData.length > 49) this.allData.length = 49;
         this.allData.unshift(objet);
-        //for(var element in this.receiveNews) {
-          console.log(this.allData);
-        //}
         
         console.log(data);
         this.temperature = data.temp;
