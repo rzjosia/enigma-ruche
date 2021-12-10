@@ -36,7 +36,7 @@
         </div>
       </v-card>
     </div>
-    <div v-if="onLine && temperature != null">
+    <div v-if="temperature != null">
       <v-card class="mx-auto" max-width="344" style="margin-top: 50px; padding: 1rem">
         <div class="text-h6 font-weight-light mb-2">Dernières données récupérées</div>
         <v-img :src="logo" height="200px"></v-img>
