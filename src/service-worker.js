@@ -11,6 +11,13 @@ if (workbox) {
         cacheName: "cache-css"
       })
     )
+
+    workbox.routing.registerRoute(
+      ({ request }) => request.destination === "image",
+      new workbox.strategies.StaleWhileRevalidate({
+        cacheName: "cache-image"
+      })
+    )
     // Google fonts
     workbox.routing.registerRoute(
       ({ url }) => url.origin === "https://fonts.gstatic.com",
