@@ -36,7 +36,7 @@
         </div>
       </v-card>
     </div>
-    <div v-if="temperature != ''">
+    <div v-if="onLine && temperature != null">
       <v-card class="mx-auto" max-width="344" style="margin-top: 50px; padding: 1rem">
         <div class="text-h6 font-weight-light mb-2">Dernières données récupérées</div>
         <v-img :src="logo" height="200px"></v-img>
@@ -105,6 +105,7 @@ export default {
     if (localStorage.nameM5Stack) {
       this.nameM5Stack = localStorage.nameM5Stack.replace(/['"]+/g, "");
     }
+	console.log(this.temperature)
   },
   data() {
     return {
@@ -116,7 +117,7 @@ export default {
       loader: require("../assets/loader.gif"),
       labels: [0],
       valueTemp: [0],
-      temperature: "",
+      temperature: null,
       humidity: "",
       battery: "",
       headers: [
@@ -222,6 +223,7 @@ export default {
         } else {
           this.valueTemp.push(data.temp);
         }
+		console.log(this.temperature)
       });
     },
     doSubscribe() {
