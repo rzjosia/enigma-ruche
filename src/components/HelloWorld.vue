@@ -273,7 +273,7 @@ export default {
     },
     reset() {
       this.destroyConnection();
-      this.temperature = "";
+      this.temperature = null;
       this.humidity = "";
       this.battery = "";
       this.nameM5Stack = "";
