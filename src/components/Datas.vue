@@ -83,7 +83,7 @@ import dayjs from "dayjs";
 import { scanBluetoothDevices } from "@/services/bluetooth";
 
 export default {
-  name: "HelloWorld",
+  name: "Datas",
   mounted() {
     window.addEventListener("online", this.updateOnlineStatus);
     window.addEventListener("offline", this.updateOnlineStatus);
@@ -105,7 +105,6 @@ export default {
     if (localStorage.nameM5Stack) {
       this.nameM5Stack = localStorage.nameM5Stack.replace(/['"]+/g, "");
     }
-	console.log(this.temperature)
   },
   data() {
     return {
@@ -223,7 +222,6 @@ export default {
         } else {
           this.valueTemp.push(data.temp);
         }
-		console.log(this.temperature)
       });
     },
     doSubscribe() {
